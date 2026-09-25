@@ -1,0 +1,53 @@
+profile,display_position,fit_slot,screen_type,field_slot,fit_id,category,field,status
+Road,1,0,Screen 1,1,48,Speed,Speed,decoded from FIT
+Road,1,0,Screen 1,2,409,Gears,Gear Combo,decoded from FIT
+Road,1,0,Screen 1,3,6,Distance,Distance,decoded from FIT
+Road,1,0,Screen 1,4,56,Timer,Timer,decoded from FIT
+Road,1,0,Screen 1,5,11,Elevation,Grade,decoded from FIT
+Road,1,0,Screen 1,6,59,Other,Time of Day,decoded from FIT
+Road,1,0,Screen 1,7,9,Elevation,Elevation,decoded from FIT
+Road,1,0,Screen 1,8,49,Speed,Avg Speed,decoded from FIT
+Road,1,0,Screen 1,9,3,Cadence,Cadence,decoded from FIT
+Road,1,0,Screen 1,10,13,Heart Rate,Heart Rate,decoded from FIT
+Road,3,1,Lap Summary,1,48,Speed,Speed,decoded from FIT
+Road,3,1,Lap Summary,2,6,Distance,Distance,decoded from FIT
+Road,5,3,Elevation,1,11,Elevation,Grade,decoded from FIT
+Road,5,3,Elevation,2,9,Elevation,Elevation,decoded from FIT
+Road,7,13,ClimbPro,1,11,Elevation,Grade,decoded from FIT
+Road,7,13,ClimbPro,2,9,Elevation,Elevation,decoded from FIT
+Road,,10,Reserved,1,87,Timer,Last Lap Time,conditional screen; not in ordered display sequence
+Road,,10,Reserved,2,84,Distance,Last Lap Distance,conditional screen; not in ordered display sequence
+Road,2,4,Screen 2,1,348,Graphical,Speed Bars,Verified on device
+Road,2,4,Screen 2,2,344,Graphical,Speed Graph,Verified on device
+Road,2,4,Screen 2,3,368,Graphical,Elevation Graph,Verified on device
+Road,2,4,Screen 2,4,349,Graphical,Cadence Bars,Verified on device
+Road,2,4,Screen 2,5,345,Graphical,Cadence Graph,Verified on device
+Road,2,4,Screen 2,6,347,Graphical,Heart Rate Bars,Verified on device
+Road,2,4,Screen 2,7,343,Graphical,Heart Rate Graph,Verified on device
+Road,2,4,Screen 2,8,199,Heart Rate,Time in HR Zone 1,Verified on device
+Road,2,4,Screen 2,9,200,Heart Rate,Time in HR Zone 2,Verified on device
+Road,2,4,Screen 2,10,201,Heart Rate,Time in HR Zone 3,Verified on device
+Road,3,5,Screen 3,1,202,Heart Rate,Time in HR Zone 4,Verified on device
+Road,3,5,Screen 3,2,203,Heart Rate,Time in HR Zone 5,Verified on device
+Road,3,5,Screen 3,3,23,Heart Rate,HR Zone Graph,Verified on device
+Road,3,5,Screen 3,4,478,Heart Rate,EPOC,Verified on device
+Road,3,5,Screen 3,5,178,Gears,Gears,Verified on device
+Road,3,5,Screen 3,6,179,Gears,Front Gear,Verified on device
+Road,3,5,Screen 3,7,180,Gears,Rear Gear,Verified on device
+Road,3,5,Screen 3,8,182,Gears,Gear Ratio,Verified on device
+Road,3,5,Screen 3,9,408,Gears,Di2 Battery Level,Verified on device
+Road,3,5,Screen 3,10,411,Gears,Di2 Shift Mode,Verified on device
+Road,4,6,Screen 4,1,317,Lights,Battery Status,Verified on device
+Road,4,6,Screen 4,2,318,Lights,Beam Angle Status,Verified on device
+Road,4,6,Screen 4,3,319,Lights,Light Mode,Verified on device
+Road,4,6,Screen 4,4,316,Lights,Lights Connected,Verified on device
+Road,4,6,Screen 4,5,65,Workouts,Distance to Go,Verified on device
+Road,4,6,Screen 4,6,68,Workouts,Time to Go,Verified on device
+Road,4,6,Screen 4,7,67,Workouts,Reps to Go,Verified on device
+Road,4,6,Screen 4,8,64,Workouts,Calories to Go,Verified on device
+Road,4,6,Screen 4,9,66,Workouts,Heart Rate to Go,Verified on device
+Road,4,6,Screen 4,10,45,Workouts,Workout Step,Verified on device
+Road,5,7,Screen 5,1,511,Workouts,Workout Comparison,Verified on device
+Road,5,7,Screen 5,2,522,Workouts,Duration,Verified on device
+Road,5,7,Screen 5,3,523,Workouts,Step Time,Verified on device
+Road,5,7,Screen 5,4,521,Workouts,Target,Verified on device

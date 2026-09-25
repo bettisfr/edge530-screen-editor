@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Edge Screen Studio</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='device-scale.css') }}?v=6">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Edge Screen Studio">
+        <span class="brand-mark">E</span>
+        <span><strong>Edge Screen Studio</strong><small>Garmin Edge 530 · Profile editor</small></span>
+      </a>
+      <div class="top-actions">
+        <button class="button button-soft" id="openDevice">Open Road from Garmin</button>
+        <label class="button button-soft file-button" for="fitFile">Open FIT file</label>
+        <input id="fitFile" type="file" accept=".fit,application/octet-stream" hidden>
+        <button class="button button-primary" id="downloadButton" disabled>Export FIT <span aria-hidden="true">↗</span></button>
+      </div>
+    </header>
+
+    <main>
+      <section class="welcome" id="welcome">
+        <div class="welcome-copy">
+          <p class="eyebrow">A VISUAL EDITOR — WITHOUT TOUCHING THE GARMIN</p>
+          <h1>Your screens,<br><em>your way.</em></h1>
+          <p>Open a FIT profile, choose a page, and arrange its data fields in the Edge 530 layout. Changes stay in preview until you export the file.</p>
+          <div class="welcome-actions">
+            <button class="button button-primary button-large" id="welcomeDevice">Open Road from Garmin <span>→</span></button>
+            <label class="button button-outline button-large" for="fitFile">Choose a FIT file</label>
+          </div>
+          <div class="safe-note"><span class="safe-dot"></span> Nothing is written to the device automatically.</div>
+        </div>
+        <div class="welcome-device" aria-hidden="true">
+          <div class="device-body">
+            <svg class="device-shell" viewBox="0 0 240 390" preserveAspectRatio="none" aria-hidden="true">
+              <path class="shell-shape" d="M45 4C72-1 168-1 195 4c24 5 39 23 41 51v270c0 25-12 44-34 54-30 14-134 14-164 0C16 369 4 350 4 325V55C6 28 21 9 45 4Z"/>
+              <path class="shell-seam" d="M13 348c29 30 185 30 214 0"/>
+              <circle class="shell-sensor" cx="74" cy="43" r="4"/>
+            </svg>
+            <div class="device-screen">
+              <div class="preview-status"><span>10:08</span><span>GPS ●　▰</span></div>
+              <div class="welcome-grid">
+                <div><small>Speed</small><b>24.8</b></div><div><small>Heart rate</small><b>82</b></div>
+                <div><small>Distance</small><b>34.2</b></div><div><small>Cadence</small><b>86</b></div>
+                <div><small>Timer</small><b>1:24</b></div><div><small>Grade</small><b>4.1</b></div>
+                <div><small>Elevation</small><b>312</b></div><div><small>Avg speed</small><b>26.1</b></div>
+                <div><small>Time of day</small><b>15:42</b></div><div><small>Gear ratio</small><b>2.6</b></div>
+              </div>
+            </div>
+            <div class="device-logo">GARMIN</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace hidden" id="workspace">
+        <div class="workspace-heading">
+          <div>
+            <p class="eyebrow">PROFILE WORKBENCH</p>
+            <h1><span id="profileName">Road</span><span class="profile-pill">EDGE 530</span></h1>
+          </div>
+          <div class="dirty-state" id="dirtyState"><span></span><b>Profile loaded</b><small id="fileName">CyclingRoadROAD.fit</small></div>
+        </div>
+
+        <div class="editor-layout">
+          <section class="preview-panel">
+            <div class="panel-heading">
+              <div class="page-switcher">
+                <button class="round-button" id="previousPage" aria-label="Previous page">←</button>
+                <div><small>PAGE</small><strong id="pageCounter">— / —</strong></div>
+                <button class="round-button" id="nextPage" aria-label="Next page">→</button>
+              </div>
+              <div class="page-name"><strong id="screenTitle">Screen</strong><small id="screenSubtitle">Activity data</small></div>
+            </div>
+
+            <div class="preview-stage">
+              <div class="device-body editor-device">
+                <svg class="device-shell" viewBox="0 0 240 390" preserveAspectRatio="none" aria-hidden="true">
+                  <path class="shell-shape" d="M45 4C72-1 168-1 195 4c24 5 39 23 41 51v270c0 25-12 44-34 54-30 14-134 14-164 0C16 369 4 350 4 325V55C6 28 21 9 45 4Z"/>
+                  <path class="shell-seam" d="M13 348c29 30 185 30 214 0"/>
+                  <circle class="shell-sensor" cx="74" cy="43" r="4"/>
+                </svg>
+                <div class="device-screen live-screen">
+                  <div class="preview-status"><span id="deviceClock">10:08</span><span>GPS ●　▰</span></div>
+                  <div class="data-grid" id="dataGrid"></div>
+                </div>
+                <div class="device-logo">GARMIN</div>
+              </div>
+            </div>
+            <div class="preview-footer">
+              <div class="field-count-control">
+                <label for="fieldCount">Fields on page</label>
+                <div class="stepper"><button id="countDown" aria-label="Remove a field">−</button><input id="fieldCount" type="number" min="1" max="10" value="10"><button id="countUp" aria-label="Add a field">+</button></div>
+              </div>
+              <div class="layout-control" id="layoutControl">
+                <label>Layout</label>
+                <div class="segmented"><button data-variant="0" class="active">A</button><button data-variant="1">B</button></div>
+              </div>
+            </div>
+            <div class="layout-caption" id="layoutCaption">Select a cell to assign a data field.</div>
+          </section>
+
+          <aside class="field-panel">
+            <div class="field-panel-head">
+              <div><p class="eyebrow">FIELD PICKER</p><h2 id="pickerTitle">Choose a cell</h2></div>
+              <span class="selected-number" id="selectedNumber">—</span>
+            </div>
+            <div class="picker-search"><span>⌕</span><input id="fieldSearch" type="search" placeholder="Search fields…" autocomplete="off"></div>
+            <div class="category-row" id="categoryRow"></div>
+            <div class="field-list" id="fieldList"><div class="empty-state">Load a FIT profile, then select a cell on the screen.</div></div>
+            <div class="panel-tip"><span>i</span><p>Graph and bar fields use a compact numeric display when they do not have a full-width cell.</p></div>
+          </aside>
+        </div>
+
+        <div class="bottom-bar">
+          <div class="bottom-info"><span class="status-indicator"></span><span id="saveMessage">Ready to edit</span></div>
+          <div class="bottom-actions"><button class="button button-soft" id="reloadButton">Discard changes</button><button class="button button-primary" id="saveButton">Prepare changes</button></div>
+        </div>
+      </section>
+    </main>
+    <div class="toast" id="toast" role="status"></div>
+  </div>
+  <script src="{{ url_for('static', filename='app.js') }}?v=3" defer></script>
+</body>
+</html>

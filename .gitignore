@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+.pytest_cache/
+
+# Garmin profiles and temporary device files
+*.fit
+*.FIT
+*.TMP
+backups/
+.~lock.*#
+
+# Local runtime / editor files
+instance/
+.DS_Store
+.idea/
+.vscode/

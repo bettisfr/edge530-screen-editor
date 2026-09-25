@@ -1,0 +1,146 @@
+/* Edge 530 shell silhouette and cool-gray LCD preview. */
+:root {
+  --paper: #f1f3f4;
+}
+
+body {
+  background: linear-gradient(115deg, #f5f6f7, #eef1f2 72%, #ebeff0);
+}
+
+.device-body {
+  aspect-ratio: 240 / 390;
+  position: relative;
+  isolation: isolate;
+  padding: 0;
+  display: block;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.device-shell {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.shell-shape {
+  fill: #202629;
+  stroke: #596267;
+  stroke-width: 2;
+}
+
+.shell-seam {
+  fill: none;
+  stroke: #30383c;
+  stroke-width: 7;
+  stroke-linecap: round;
+}
+
+.shell-sensor {
+  fill: #111719;
+  stroke: #2b3337;
+  stroke-width: 1.5;
+}
+
+.device-body > .device-screen {
+  position: absolute;
+  z-index: 1;
+  top: 14.5%;
+  left: 10%;
+  width: 80%;
+  height: auto;
+  aspect-ratio: 246 / 322;
+  border-width: 6px;
+  border-radius: 5px;
+  background: #e5e7e8;
+  color: #202629;
+}
+
+.device-body > .device-logo {
+  position: absolute;
+  z-index: 1;
+  top: 85%;
+  left: 0;
+  right: 0;
+  margin: 0;
+  color: #a5afb2;
+}
+
+.device-screen .preview-status {
+  background: #d4d8da;
+  color: #343b3e;
+  border-bottom-color: #aeb5b8;
+}
+
+.welcome-grid div {
+  border-color: #adb4b7;
+}
+
+.welcome-grid small {
+  color: #4a5255;
+}
+
+.data-grid {
+  background: #adb4b7;
+}
+
+.data-cell {
+  background: #e5e7e8;
+  color: #202629;
+}
+
+.data-cell:hover {
+  background: #eef0f1;
+}
+
+.data-cell.selected {
+  background: #f3f5f5;
+}
+
+/* Larger device mockups for easier reading. */
+.welcome-device .device-body {
+  width: clamp(290px, 33vw, 370px);
+}
+
+.editor-device {
+  width: min(340px, 72%);
+}
+
+/* Keep the device preview in view while browsing long field categories. */
+@media (min-width: 901px) {
+  .editor-layout {
+    align-items: start;
+  }
+
+  .preview-panel {
+    position: sticky;
+    top: 18px;
+  }
+
+  .field-panel {
+    height: min(620px, calc(100vh - 36px));
+    min-height: 480px;
+  }
+
+  .field-list {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .editor-device {
+    width: 300px;
+  }
+}
+
+@media (max-width: 600px) {
+  .editor-device {
+    width: min(285px, 82%);
+  }
+}
