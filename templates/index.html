@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Edge Screen Studio</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='device-scale.css') }}?v=11">
+  <link rel="stylesheet" href="{{ url_for('static', filename='device-scale.css') }}">
 </head>
 <body>
   <div class="app-shell">
@@ -18,6 +18,7 @@
         <button class="button button-soft" id="openDevice">Open Road from Garmin</button>
         <label class="button button-soft file-button" for="fitFile">Open FIT file</label>
         <input id="fitFile" type="file" accept=".fit,application/octet-stream" hidden>
+        <button class="button button-soft" id="installButton" disabled>Install on Garmin</button>
         <button class="button button-primary" id="downloadButton" disabled>Export FIT <span aria-hidden="true">↗</span></button>
       </div>
     </header>
@@ -29,10 +30,14 @@
           <h1>Your screens,<br><em>your way.</em></h1>
           <p>Open a FIT profile, choose a page, and arrange its data fields in the Edge 530 layout. Changes stay in preview until you export the file.</p>
           <div class="welcome-actions">
-            <button class="button button-primary button-large" id="welcomeDevice">Open Road from Garmin <span>→</span></button>
+            <button class="button button-primary button-large" id="welcomeDevice" disabled>Open Road from Garmin <span>→</span></button>
             <label class="button button-outline button-large" for="fitFile">Choose a FIT file</label>
           </div>
           <div class="safe-note"><span class="safe-dot"></span> Nothing is written to the device automatically.</div>
+          <div class="device-connection" id="deviceStatus" data-state="checking" role="status" aria-live="polite">
+            <span class="device-connection-dot" aria-hidden="true"></span>
+            <span id="deviceStatusText">Checking Garmin connection…</span>
+          </div>
         </div>
         <div class="welcome-device" aria-hidden="true">
           <div class="device-body">
@@ -111,7 +116,7 @@
             <div class="picker-search"><span>⌕</span><input id="fieldSearch" type="search" placeholder="Search fields…" autocomplete="off"></div>
             <div class="category-row" id="categoryRow"></div>
             <div class="field-list" id="fieldList"><div class="empty-state">Load a FIT profile, then select a cell on the screen.</div></div>
-            <div class="panel-tip"><span>i</span><p>Graph and bar fields use a compact numeric display when they do not have a full-width cell.</p></div>
+            <div class="panel-tip"><span>i</span><p>Sample values are visual placeholders only. They are not saved to the FIT profile.</p></div>
           </aside>
         </div>
 
@@ -121,8 +126,19 @@
         </div>
       </section>
     </main>
+    <dialog class="install-dialog" id="installDialog" aria-labelledby="installDialogTitle" aria-describedby="installDialogDescription">
+      <div class="install-dialog-icon" aria-hidden="true">↗</div>
+      <p class="eyebrow">GARMIN EDGE 530</p>
+      <h2 id="installDialogTitle">Install Road profile?</h2>
+      <p id="installDialogDescription">The current profile will be backed up locally. The prepared profile will be queued on the Garmin and applied after you safely eject and restart it.</p>
+      <div class="install-dialog-file"><span>PROFILE</span><strong id="installDialogFilename">CyclingRoadROAD.fit</strong></div>
+      <form method="dialog" class="install-dialog-actions">
+        <button class="button button-soft" value="cancel">Cancel</button>
+        <button class="button button-primary" id="confirmInstallButton" value="install">Install on Garmin</button>
+      </form>
+    </dialog>
     <div class="toast" id="toast" role="status"></div>
   </div>
-  <script src="{{ url_for('static', filename='app.js') }}?v=3" defer></script>
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
 </body>
 </html>

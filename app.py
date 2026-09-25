@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import csv
+from datetime import datetime
 import getpass
 import io
 import os
@@ -43,6 +44,9 @@ from fit_patch import (  # noqa: E402
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(32)
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
+# Static assets should be revalidated instead of relying on hand-maintained
+# ?v= query strings during local development.
+app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 
 # The browser session holds only a random key. FIT bytes stay in memory and
 # are never written over the source profile or directly onto the device.
@@ -151,6 +155,16 @@ def index():
 @app.get("/api/catalog")
 def catalog():
     return jsonify(CATALOG)
+
+
+@app.get("/api/device-status")
+def device_status():
+    mounted = GARMIN_ROOT.is_dir() and os.path.ismount(GARMIN_ROOT)
+    profile_available = DEVICE_ROAD_FIT.is_file()
+    return jsonify(
+        connected=mounted,
+        profileAvailable=profile_available,
+    )
 
 
 @app.post("/api/open")
@@ -263,6 +277,82 @@ def download_profile():
         as_attachment=True,
         download_name=filename,
         max_age=0,
+    )
+
+
+@app.post("/api/install")
+def install_profile():
+    _key, _filename, data = current_profile()
+    payload = request.get_json(silent=True) or {}
+    if payload.get("confirm") is not True:
+        return jsonify(error="Installation was not confirmed."), 400
+
+    mounted = GARMIN_ROOT.is_dir() and os.path.ismount(GARMIN_ROOT)
+    if not mounted:
+        return jsonify(error="The Garmin is not mounted."), 409
+    if not DEVICE_ROAD_FIT.is_file():
+        return jsonify(error="CyclingRoadROAD.fit is not available on the Garmin."), 409
+
+    new_files = GARMIN_ROOT / "Garmin" / "NewFiles"
+    if not new_files.is_dir():
+        return jsonify(error="The Garmin/NewFiles folder is missing."), 409
+    pending_file = new_files / DEVICE_ROAD_FIT.name
+    if pending_file.exists():
+        return jsonify(error="A Road profile is already waiting in Garmin/NewFiles. Eject or resolve it before installing another."), 409
+
+    backup_path = None
+    staged_path = None
+    queued = False
+    try:
+        original = DEVICE_ROAD_FIT.read_bytes()
+        decode_bytes(data)  # refuse to queue an invalid or unrelated binary file
+
+        backup_dir = ROOT / "backups"
+        backup_dir.mkdir(parents=True, exist_ok=True)
+        backup_name = f"{DEVICE_ROAD_FIT.stem}-{datetime.now().strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:8]}.fit"
+        backup_path = backup_dir / backup_name
+        with backup_path.open("xb") as backup:
+            backup.write(original)
+            backup.flush()
+            os.fsync(backup.fileno())
+        if backup_path.read_bytes() != original:
+            raise OSError("The Road profile backup did not verify.")
+
+        if not (GARMIN_ROOT.is_dir() and os.path.ismount(GARMIN_ROOT)):
+            raise OSError("The Garmin was disconnected before installation.")
+        if not DEVICE_ROAD_FIT.is_file() or DEVICE_ROAD_FIT.read_bytes() != original:
+            raise OSError("The Road profile changed during installation; nothing was queued.")
+
+        staged_path = new_files / f".{DEVICE_ROAD_FIT.stem}-{uuid.uuid4().hex}.tmp"
+        with staged_path.open("xb") as staged:
+            staged.write(data)
+            staged.flush()
+            os.fsync(staged.fileno())
+        if staged_path.read_bytes() != data:
+            raise OSError("The staged profile did not verify.")
+        if pending_file.exists():
+            raise OSError("A Road profile appeared in Garmin/NewFiles during installation.")
+        if not (GARMIN_ROOT.is_dir() and os.path.ismount(GARMIN_ROOT)):
+            raise OSError("The Garmin was disconnected before installation completed.")
+
+        os.replace(staged_path, pending_file)
+        staged_path = None
+        queued = True
+        if pending_file.read_bytes() != data:
+            pending_file.unlink(missing_ok=True)
+            queued = False
+            raise OSError("The queued profile did not verify.")
+    except Exception as exc:
+        if staged_path is not None:
+            staged_path.unlink(missing_ok=True)
+        detail = f" Backup retained at {backup_path.relative_to(ROOT)}." if backup_path and backup_path.exists() else ""
+        return jsonify(error=f"Could not install the Road profile: {exc}.{detail}"), 500
+
+    return jsonify(
+        queued=queued,
+        target="Garmin/NewFiles/" + pending_file.name,
+        backup=str(backup_path.relative_to(ROOT)),
+        nextStep="Safely eject the Garmin, then restart it to apply the profile.",
     )
 
 

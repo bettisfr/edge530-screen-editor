@@ -96,9 +96,26 @@ body {
   color: #202629;
 }
 
+.data-cell .cell-value {
+  font-size: clamp(13px, 1.45vw, 18px);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  color: #111719;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+}
+
+.data-cell .cell-unit {
+  color: #111719;
+  font-size: 0.72em;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
 .data-cell .cell-label {
   font-size: clamp(10px, 1vw, 12px);
-  font-weight: 700;
+  font-weight: 400;
+  color: #6f797d;
 }
 
 .data-cell:hover {
@@ -112,6 +129,39 @@ body {
 /* Larger device mockups for easier reading. */
 .welcome-device .device-body {
   width: clamp(290px, 33vw, 370px);
+}
+
+.device-connection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  color: #718087;
+  font-size: 11px;
+}
+
+.device-connection-dot {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: #a8b0b3;
+}
+
+.device-connection[data-state="connected"] .device-connection-dot {
+  background: #63a45c;
+  box-shadow: 0 0 0 3px #e3f0df;
+}
+
+.device-connection[data-state="profile-missing"] .device-connection-dot,
+.device-connection[data-state="unavailable"] .device-connection-dot {
+  background: #cc9a43;
+  box-shadow: 0 0 0 3px #f5ecd9;
+}
+
+.device-connection[data-state="disconnected"] .device-connection-dot {
+  background: #929b9f;
+  box-shadow: 0 0 0 3px #e8ebec;
 }
 
 .editor-device {
