@@ -84,6 +84,7 @@ body {
 
 .welcome-grid small {
   color: #4a5255;
+  font-size: clamp(9px, 0.9vw, 11px);
 }
 
 .data-grid {
@@ -93,6 +94,11 @@ body {
 .data-cell {
   background: #e5e7e8;
   color: #202629;
+}
+
+.data-cell .cell-label {
+  font-size: clamp(10px, 1vw, 12px);
+  font-weight: 700;
 }
 
 .data-cell:hover {
@@ -109,7 +115,7 @@ body {
 }
 
 .editor-device {
-  width: min(340px, 72%);
+  width: min(307px, 65%);
 }
 
 /* Keep the device preview in view while browsing long field categories. */
@@ -135,12 +141,12 @@ body {
 
 @media (max-width: 900px) {
   .editor-device {
-    width: 300px;
+    width: 271px;
   }
 }
 
 @media (max-width: 600px) {
   .editor-device {
-    width: min(285px, 82%);
+    width: min(257px, 74%);
   }
 }
