@@ -2,6 +2,12 @@
 
 A small local web app for previewing and editing Garmin Edge 530 activity-profile data screens. It reads a `.FIT` profile, lets you choose the fields and screen layout, then exports a modified `.FIT` file. It does not write to the Garmin automatically.
 
+<p align="center">
+  <img src="static/edge530-welcome.svg" alt="Slightly tilted Garmin Edge 530 mockup showing a sample Road data screen" width="320">
+</p>
+
+The screen values in this illustration are examples; they are not read from a connected device.
+
 ## Run locally
 
 Python 3.9 or newer is required. Run the commands below inside the Python environment you want to use (for example, an already activated virtual environment).
