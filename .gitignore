@@ -21,3 +21,6 @@ instance/
 .DS_Store
 .idea/
 .vscode/
+
+# Local Codex project metadata
+.codex-project-id
